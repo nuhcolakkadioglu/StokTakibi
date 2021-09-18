@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StokTakibi.DataAccess\StokTakibi.DataAccess.csproj" />
+    <ProjectReference Include="..\StokTakibi.Entities\StokTakibi.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
