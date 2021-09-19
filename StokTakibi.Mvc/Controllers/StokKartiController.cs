@@ -1,9 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using StokTakibi.Business.Abstract;
 using StokTakibi.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace StokTakibi.Mvc.Controllers
@@ -17,14 +22,19 @@ namespace StokTakibi.Mvc.Controllers
             _stokKartiService = stokKartiService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var result = _stokKartiService.GetAllByNonDeleted();
+            var stokKartlari = new List<StokKarti>();
 
-            if (result.Count > -1)
-                return View(result);
-
-            return NotFound();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("http://localhost:10077/api/stokkarti/"))
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    stokKartlari = JsonConvert.DeserializeObject<List<StokKarti>>(data);
+                }
+            }
+            return View(stokKartlari);
         }
 
         public IActionResult Create()
@@ -32,40 +42,61 @@ namespace StokTakibi.Mvc.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(StokKarti stokKarti)
+        public async Task<IActionResult> Create(StokKarti stokKarti)
         {
-            _stokKartiService.Add(stokKarti);
-            return RedirectToAction("Index");
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:10077/api/stokkarti/", stokKarti);
+            response.EnsureSuccessStatusCode();
+            //_stokKartiService.Add(stokKarti);
+            if (response.StatusCode == System.Net.HttpStatusCode.Created)
+
+                return RedirectToAction("Index");
+
+            else
+
+                return View();
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var result = _stokKartiService.GetById(id);
+            var stokKartlari = new StokKarti();
 
-            if (result is not null)
+            using (var httpClient = new HttpClient())
             {
-                return View(result);
-
+                using (var response = await httpClient.GetAsync("http://localhost:10077/api/stokkarti/" + id))
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    stokKartlari = JsonConvert.DeserializeObject<StokKarti>(data);
+                }
             }
-            return NotFound();
+            return View(stokKartlari);
         }
 
         [HttpPost]
-        public IActionResult Edit(StokKarti stokKarti)
+        public async Task<IActionResult> Edit(StokKarti stokKarti)
         {
-            _stokKartiService.Update(stokKarti);
-            return RedirectToAction("Index");
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:10077/api/stokkarti/", stokKarti);
+            response.EnsureSuccessStatusCode();
+            //_stokKartiService.Add(stokKarti);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+
+                return RedirectToAction("Index");
+
+            else
+
+                return View();
+
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if(id!=null)
-            {
-                _stokKartiService.Delete(id.Value);
-                return RedirectToAction("Index");
-            }
-            return NotFound();
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:10077/api/stokkarti/" + id);
+
+            return RedirectToAction("Index");
+
 
         }
     }

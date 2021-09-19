@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,16 +6,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using StokTakibi.Business.Abstract;
-using StokTakibi.Business.Concrete;
-using StokTakibi.DataAccess.Abstract;
-using StokTakibi.DataAccess.Concrete.EntityFramework;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace StokTakibi.WebApi
+namespace StokTakibi.JWTDemo
 {
     public class Startup
     {
@@ -28,23 +27,30 @@ namespace StokTakibi.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IStokKartiDal, EfStokKartiDal>();
-            services.AddScoped<IStokKartiService, StokKartiManager>();
-
 
             services.AddControllers();
-            services.AddCors(opt =>
+            var key = "This is my first Test Key";
+            services.AddAuthentication(x =>
             {
-                opt.AddPolicy(
-                    name: "alowwww",
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                    }
-                   );
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key))
+                };
             });
+
+            services.AddSingleton<IJwtAuth>(new Auth(key));
+
+          
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,8 +62,6 @@ namespace StokTakibi.WebApi
             }
 
             app.UseRouting();
-
-            app.UseCors("alowwww");
 
             app.UseAuthentication();
 

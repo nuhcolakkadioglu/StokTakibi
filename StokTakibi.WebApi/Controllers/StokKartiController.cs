@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StokTakibi.Business.Abstract;
 using StokTakibi.Entities.Concrete;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace StokTakibi.WebApi.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class StokKartiController : ControllerBase
@@ -25,7 +27,7 @@ namespace StokTakibi.WebApi.Controllers
         public IActionResult Add(StokKarti stokKarti)
         {
             _stokKartiService.Add(stokKarti);
-            return Ok();
+            return CreatedAtAction(nameof(Get), new { id = stokKarti.Id }, stokKarti);
         }
 
         [HttpPut]
@@ -46,7 +48,7 @@ namespace StokTakibi.WebApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_stokKartiService.GetAll());
+            return Ok(_stokKartiService.GetAllByNonDeleted());
         }
 
         [HttpGet("{id}")]
