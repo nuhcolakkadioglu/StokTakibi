@@ -14,6 +14,7 @@ namespace StokTakibi.Core.DataAccess
         T Get(Expression<Func<T, bool>> predicate = null);
         void Add(T entity);
         void Delete(T entity);
+        void HardDelete(T entity);
         void Update(T entity);
     }
 }

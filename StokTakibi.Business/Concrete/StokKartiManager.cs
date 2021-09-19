@@ -24,7 +24,9 @@ namespace StokTakibi.Business.Concrete
 
         public void Delete(StokKarti stokKarti)
         {
+            stokKarti.IsDeleted = true;
             _stokKarti.Delete(stokKarti);
+           
         }
 
         public List<StokKarti> GetAll()
@@ -32,9 +34,20 @@ namespace StokTakibi.Business.Concrete
             return _stokKarti.GetAll();
         }
 
+        public List<StokKarti> GetAllByNonDeleted()
+        {
+            return _stokKarti.GetAll(m=>m.IsDeleted==false);
+        }
+
         public StokKarti GetById(int stokId)
         {
             return _stokKarti.Get(m => m.Id == stokId);
+        }
+
+        public void HardDelete(StokKarti stokKarti)
+        {
+
+            _stokKarti.HardDelete(stokKarti);
         }
 
         public void Update(StokKarti stokKarti)

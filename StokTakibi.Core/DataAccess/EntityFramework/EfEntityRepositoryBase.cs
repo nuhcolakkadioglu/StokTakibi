@@ -27,8 +27,9 @@ namespace StokTakibi.Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
+                
                 var data = context.Entry(entity);
-                data.State = EntityState.Deleted;
+                data.State = EntityState.Modified;
                 context.SaveChanges();
             }
         }
@@ -47,6 +48,16 @@ namespace StokTakibi.Core.DataAccess.EntityFramework
             using (TContext context = new TContext())
             {
                 return predicate == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(predicate).ToList();
+            }
+        }
+
+        public void HardDelete(TEntity entity)
+        {
+            using (TContext context = new TContext())
+            {
+                var data = context.Entry(entity);
+                data.State = EntityState.Deleted;
+                context.SaveChanges();
             }
         }
 

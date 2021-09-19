@@ -1,0 +1,49 @@
+﻿@model StokKarti
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Yeni Stok Kartı</h5>
+        <h6 class="card-subtitle mb-2 text-muted">stok kartı bilgileri</h6>
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label for="stokadi" asp-for="StokAdi" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="StokAdi" placeholder="Stok Kartı Adı">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StokBarkod" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="StokBarkod" placeholder="Stok Barkod">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BirimId" class="form-label"></label>
+                <select asp-for="BirimId" class="form-control">
+                    <option value="0">Adet</option>
+                    <option value="1">Koli</option>
+                    <option value="2">Kg</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Kdv" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Kdv" placeholder=" % Kdv">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AlisFiyat" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="AlisFiyat" placeholder="Alış Fiyatı">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SatisFiyat" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="SatisFiyat" placeholder="Satış Fiyatı">
+            </div>
+            <button class="btn btn-primary mt-3">Kaydet</button>
+        </form>
+    </div>
+</div>
+
+
+
+

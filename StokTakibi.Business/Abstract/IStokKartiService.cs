@@ -10,8 +10,14 @@ namespace StokTakibi.Business.Abstract
    public interface IStokKartiService
     {
         List<StokKarti> GetAll();
+
+        List<StokKarti> GetAllByNonDeleted();
+
+
         void Add(StokKarti stokKarti);
         void Delete(StokKarti stokKarti);
+        void HardDelete(StokKarti stokKarti);
+
         void Update(StokKarti stokKarti);
         StokKarti GetById(int stokId);
 

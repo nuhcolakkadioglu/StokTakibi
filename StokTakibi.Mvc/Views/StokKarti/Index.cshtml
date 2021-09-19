@@ -1,0 +1,68 @@
+﻿@model List<StokKarti>
+
+<div class="card mb-4">
+    <div class="card-header">
+       
+        Stok Kartı Listesi
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Barkod</th>
+                        <th>Adı</th>
+                        <th>Birim</th>
+                        <th>Kdv</th>
+                        <th>Alış Fiyatı</th>
+                        <th>Satış Fıyatı</th>
+                        <th>İşlemler</th>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Barkod</th>
+                        <th>Adı</th>
+                        <th>Birim</th>
+                        <th>Kdv</th>
+                        <th>Alış Fiyatı</th>
+                        <th>Satış Fıyatı</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.StokBarkod</td>
+                        <td>@item.StokAdi</td>
+                        <td>@item.BirimId</td>
+                        <td>@item.Kdv</td>
+                        <td>@item.AlisFiyat</td>
+                        <td>@item.SatisFiyat</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Silmek istediginize eminmisiniz');" class="btn btn-danger btn-sm">Sil</a>
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+}
+

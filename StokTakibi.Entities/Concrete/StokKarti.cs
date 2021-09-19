@@ -17,5 +17,7 @@ namespace StokTakibi.Entities.Concrete
         public decimal AlisFiyat { get; set; }
         public decimal SatisFiyat { get; set; }
 
+        public bool IsDeleted { get; set; }
+
     }
 }

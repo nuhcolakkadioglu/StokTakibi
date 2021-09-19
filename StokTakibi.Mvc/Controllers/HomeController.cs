@@ -18,5 +18,7 @@ namespace StokTakibi.Mvc.Controllers
         {
             return View(_stokKartiService.GetAll());
         }
+
+
     }
 }
