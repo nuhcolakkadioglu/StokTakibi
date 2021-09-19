@@ -15,7 +15,7 @@ namespace StokTakibi.Business.Abstract
 
 
         void Add(StokKarti stokKarti);
-        void Delete(StokKarti stokKarti);
+        void Delete(int id);
         void HardDelete(StokKarti stokKarti);
 
         void Update(StokKarti stokKarti);

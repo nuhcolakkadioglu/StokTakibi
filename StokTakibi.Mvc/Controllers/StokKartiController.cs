@@ -58,12 +58,11 @@ namespace StokTakibi.Mvc.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            var result = _stokKartiService.GetById(id);
-            if(result is not null)
+            if(id!=null)
             {
-                _stokKartiService.Delete(result);
+                _stokKartiService.Delete(id.Value);
                 return RedirectToAction("Index");
             }
             return NotFound();

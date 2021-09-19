@@ -22,10 +22,11 @@ namespace StokTakibi.Business.Concrete
             _stokKarti.Add(stokKarti);
         }
 
-        public void Delete(StokKarti stokKarti)
+        public void Delete(int id)
         {
-            stokKarti.IsDeleted = true;
-            _stokKarti.Delete(stokKarti);
+            var result = _stokKarti.Get(m=>m.Id== id);
+            result.IsDeleted = true;
+            _stokKarti.Delete(result);
            
         }
 
